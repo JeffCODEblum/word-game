@@ -49,11 +49,12 @@ export default async function handler(req, res) {
     const results = [0, 0, 0, 0, 0];
     const word = session.gameState.word;
     for (let i = 0; i < guess.length; i++) {
-        if (guess[i] && guess[i] && guess[i] === word[i]) {
+        const letter = guess[i].toLowerCase();
+        if (letter && letter && letter === word[i]) {
             // letter is in right place
             results[i] = 1;
         } else {
-            if (word.indexOf(guess[i]) !== -1) {
+            if (word.indexOf(letter) !== -1) {
                 // letter is in wrong place
                 results[i] = 3;
             } else {
@@ -65,7 +66,7 @@ export default async function handler(req, res) {
 
     session.gameState.results[session.gameState.turnIndex].value = guess;
     session.gameState.results[session.gameState.turnIndex].results = results;
-    if (guess === word) {
+    if (guess.toLowerCase() === word) {
         console.log("winner");
         session.gameState.state = 2;
     } else if (session.gameState.turnIndex >= 4) {
